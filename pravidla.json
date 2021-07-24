@@ -1,0 +1,37 @@
+{
+  "embeds": [
+    {
+      "title": "Pravidla",
+      "color": 4186320,
+      "description": "Pravidla na Azuremic Discordu",
+      "timestamp": "2021-07-15T22:00:00.000Z",
+      "author": {
+        "name": "Azuremic",
+        "icon_url": "https://i.imgur.com/m4hkkIj.png"
+      },
+      "image": {
+        "url": ""
+      },
+      "thumbnail": {},
+      "footer": {
+        "text": "Tým Azuremic",
+        "icon_url": "https://i.imgur.com/m4hkkIj.png"
+      },
+      "fields": [
+        {
+          "name": "Obecné",
+          "value": "obecny pravidla here"
+        },
+        {
+          "name": "Voice Channel",
+          "value": "voice channel pravidla here"
+        },
+        {
+          "name": "Pravidla profilů",
+          "value": "pravidla profilu right here"
+        }
+      ]
+    }
+  ],
+  "components": []
+}
