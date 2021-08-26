@@ -8,8 +8,9 @@ const memberRole = "865673628138078229";
 const moderatorRole = "865325952275054604";
 const helperRole = "865326287593275423";
 const supportChannelID = "865331109822726154";
-const fanatixID = "399946430346690580"
+const fanatixID = "399946430346690580";
 const everyoneID = "865278193329111082";
+const supportCategoryID = "880472669059956777";
 
 client.once('ready', () => {
     console.log('Up and running!');
@@ -46,9 +47,8 @@ client.once('ready', () => {
 });
 
 client.on('messageReactionAdd', async (reaction, user, message) =>{
-    console.log('message reaction');
+    console.log(`message reaction: ${reaction.name}`);
     if(user.bot) return;
-    console.log('user.bot');
     if(reaction.message.channel.id == rulesChannelID){
         console.log('pravidla');
         if(reaction.emoji.name == '✅'){
@@ -61,54 +61,45 @@ client.on('messageReactionAdd', async (reaction, user, message) =>{
         console.log('support');
         if(reaction.emoji.name== '🔧'){
             let guild = reaction.message.guild;
-            let supportChannel = supportChannelID;
-            supportChannel = await guild.channels.create(`Podpora - ${user.username}`, {
+            let supportChannel = await guild.channels.create(`Podpora - ${user.username}`, {
                 type: 'text',
-                permissionOverwrites: [
-                {
-                    id: user.id,
-                    allow: ['VIEW_CHANNEL', 'ATTACH_FILES', 'READ_MESSAGE_HISTORY', 'SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS', 'USE_EXTERNAL_EMOJIS'],
-                },
-                {
-                    id: moderatorRole,
-                    allow: ['VIEW_CHANNEL', 'MANAGE_CHANNELS', 'MANAGE_MESSAGES', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS', 'ADD_REACTIONS', 'USE_EXTERNAL_EMOJIS', 'ATTACH_FILES'],
-                },
-                {
-                    id: helperRole,
-                    allow: ['VIEW_CHANNEL', 'MANAGE_CHANNELS', 'MANAGE_MESSAGES', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS', 'ADD_REACTIONS', 'USE_EXTERNAL_EMOJIS', 'ATTACH_FILES'],
-                },
-                {
-                    id: memberRole,
-                    deny: ['VIEW_CHANNEL'],
-                },
-                {
-                    id: everyoneID,
-                    deny: ['VIEW_CHANNEL'],
-                },  
-                ],
-              });
-            console.log('created channel');
-            let supportChannelEmbed = new Discord.MessageEmbed()
-                .setColor(1752220)
-                .setAuthor("Azuremic", "https://i.imgur.com/m4hkkIj.png")
-                .addFields(
-                    {name: `Podpora ${user.username}`, value: 'Počkej na někoho z Admin Teamu prosím'}
-                )
-            await client.channels.cache.get(supportChannel.id).send(`<@${user.id}>`);
-            await client.channels.cache.get(supportChannel.id).send(supportChannelEmbed);
+                parent: supportCategoryID,
+                })
+                .then(channel => {
+                    channel.overwritePermissions([
+                        {
+                            id: user.id,
+                            allow: ['VIEW_CHANNEL', 'ATTACH_FILES', 'READ_MESSAGE_HISTORY', 'SEND_MESSAGES', 'EMBED_LINKS', 'ADD_REACTIONS', 'USE_EXTERNAL_EMOJIS'],
+                        },
+                        {
+                            id: moderatorRole,
+                            allow: ['VIEW_CHANNEL', 'MANAGE_CHANNELS', 'MANAGE_MESSAGES', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS', 'ADD_REACTIONS', 'USE_EXTERNAL_EMOJIS', 'ATTACH_FILES'],
+                        },
+                        {
+                            id: helperRole,
+                            allow: ['VIEW_CHANNEL', 'MANAGE_CHANNELS', 'MANAGE_MESSAGES', 'SEND_MESSAGES', 'READ_MESSAGE_HISTORY', 'EMBED_LINKS', 'ADD_REACTIONS', 'USE_EXTERNAL_EMOJIS', 'ATTACH_FILES'],
+                        },
+                        {
+                            id: memberRole,
+                            deny: ['VIEW_CHANNEL'],
+                        },
+                        {
+                            id: everyoneID,
+                            deny: ['VIEW_CHANNEL'],
+                        },
+                    ]);
+                    let supportChannelEmbed = new Discord.MessageEmbed()
+                        .setColor(1752220)
+                        .setAuthor("Azuremic", "https://i.imgur.com/m4hkkIj.png")
+                        .addFields(
+                            {name: `Podpora ${user.username}`, value: 'Počkej na někoho z Admin Teamu prosím'}
+                        )
+                    client.channels.cache.get(channel.id).send(`<@${user.id}>`);
+                    client.channels.cache.get(channel.id).send(supportChannelEmbed);
+                });
         }
     }
 });
-
-client.on('message', async message =>{
-    if(!message.content.startsWith(prefix) || message.author.bot) return;
-    const args = message.content.slice(prefix.length).split(" ");
-    const command = args.shift().toLowerCase();
-    console.log(`${message.author}: ${message.content}`);
-    
-    
-});
-
 
 client.on('guildMemberAdd' , (member) => {
     console.log(member);
@@ -120,4 +111,4 @@ client.on('guildMemberAdd' , (member) => {
 });
 
 
-client.login('ODY1MzM3MTMyOTY0NTExNzk0.YPCiAQ.fIXOuEBkzKqEfkA7lHLRafaclgU')
+client.login('ODY1MzM3MTMyOTY0NTExNzk0.YPCiAQ.RmbuI4r5Jbo-GEQWDprX9ePP9H0')
