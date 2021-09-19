@@ -172,6 +172,7 @@ client.on('guildMemberAdd' , (member) => {
         .setColor(1752220)
         .setDescription(`Vítej, <@${member.user.id}> na Azuremic! Přečti si prosím pravidla v <#865328064158498838> a potvrď je pomocí ✅ abys dostal přístup ke zbytku serveru`)
     member.guild.channels.cache.get(welcomeChannelID).send(welcomeEmbed);
+    member.send(welcomeEmbed);
 });
 
 
