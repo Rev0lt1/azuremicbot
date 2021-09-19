@@ -67,7 +67,7 @@ client.on('message', async message =>{
         let helpEmbed = new Discord.MessageEmbed()
             .setTitle('Příkazy Azuremic Bota:')
             .setColor(1752220)
-            .setDescription('**?ping**: Změří ping bota\n**pfp**: Odešle profilovou fotku __*?pfp [Označení (nepovinné)]*__\n**?user**: Odešle informace o uživateli __*?user [Označení (nepovinné)]*__\n**?help**: Tato zpráva')
+            .setDescription('**?ping**: Změří ping bota\n**?pfp**: Odešle profilovou fotku __*?pfp [Označení (nepovinné)]*__\n**?user**: Odešle informace o uživateli __*?user [Označení (nepovinné)]*__\n**?help**: Tato zpráva')
             .setFooter("Tým Azuremic", "https://i.imgur.com/m4hkkIj.png")
             .setTimestamp()
             message.channel.send(helpEmbed);
@@ -109,6 +109,39 @@ client.on('message', async message =>{
         message.channel.send(unknownEmbed);
     }
 });
+
+function isUser(sender){
+    if(!sender.bot && !sender.system){
+        return true;
+    } else {
+        return false;
+    }
+}
+
+function lastMessage(sender, typ){
+    if(sender.lastMessage === null){
+        return null;
+    } else if(typ === 'obsah'){
+        return sender.lastMessage.content;
+    } else if(typ === 'time'){
+        return sender.lastMessage.createdAt;
+    }
+}
+
+function platform(sender){
+    let statusArr = [];
+    if(sender.presence.status === 'offline'){
+        return 'Žádná (offline)';
+    } else if(sender.presence.clientStatus.web){
+        statusArr.push('Web');
+    } else if (sender.presence.clientStatus.desktop){
+        statusArr.push('Desktop');
+    } else if (sender.presence.clientStatus.mobile){
+        statusArr.push('Mobile');
+    }
+    console.log(statusArr.join(', '));
+    return statusArr.join(', ');
+}
 
 client.on('messageReactionAdd', async (reaction, user, message) =>{
     console.log(`message reaction: ${reaction.name}`);
