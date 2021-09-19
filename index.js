@@ -1,16 +1,19 @@
 const Discord = require('discord.js');
 const client = new Discord.Client();
 const prefix = '?';
+
 const welcomeChannelID = "865328514533949520";
 const rulesChannelID = "865328064158498838";
-const rules = require("./pravidla");
-const memberRole = "865673628138078229";
+const supportChannelID = "865331109822726154";
+const testingChannelID = "872217836372770837";
+const adminChannelID = "865670678753443900";
+
+const adminRole = "865325380034625586";
 const moderatorRole = "865325952275054604";
 const helperRole = "865326287593275423";
-const supportChannelID = "865331109822726154";
+const memberRole = "865673628138078229";
+
 const fanatixID = "399946430346690580";
-const everyoneID = "865278193329111082";
-const supportCategoryID = "880472669059956777";
 
 client.once('ready', () => {
     console.log('Up and running!');
@@ -44,6 +47,67 @@ client.once('ready', () => {
     });*/
     client.channels.cache.get(rulesChannelID).messages.fetch({ limit: 1 }).then(messages => {var lastMessage = messages.first();});
     client.channels.cache.get(supportChannelID).messages.fetch({ limit: 1 }).then(messages => {var lastMessage = messages.first();});
+});
+
+client.on('message', async message =>{
+    console.log(`${message.author}(${message.author.tag}): ${message.content}`);
+
+    if(!message.content.startsWith(prefix) || message.author.bot) return;
+    const args = message.content.slice(prefix.length).split(" ");
+    const command = args.shift().toLowerCase();
+    console.log(`{COMMAND} ${message.author}(${message.author.tag}): ${message.content}`);
+    
+    if(command === 'ping'){
+        message.reply('Pinging...').then(resultMessage => {
+            const ping = resultMessage.createdTimestamp - message.createdTimestamp;
+            resultMessage.edit(`Bot Ping: ${ping}, API Ping: ${client.ws.ping}`);
+            console.log(`Bot Ping: ${ping}, API Ping: ${client.ws.ping}`);
+        });
+    } else if(command === 'help'){
+        let helpEmbed = new Discord.MessageEmbed()
+            .setTitle('Příkazy Azuremic Bota:')
+            .setColor(1752220)
+            .setDescription('**?ping**: Změří ping bota\n**pfp**: Odešle profilovou fotku __*?pfp [Označení (nepovinné)]*__\n**?user**: Odešle informace o uživateli __*?user [Označení (nepovinné)]*__\n**?help**: Tato zpráva')
+            .setFooter("Tým Azuremic", "https://i.imgur.com/m4hkkIj.png")
+            .setTimestamp()
+            message.channel.send(helpEmbed);
+    } else if(command === 'pfp'){
+        let uzivatel = message.mentions.users.first()
+        if(!uzivatel){
+            let pfpEmbed = new Discord.MessageEmbed()
+                .setColor(1752220)
+                .setImage(`https://cdn.discordapp.com/avatars/${message.author.id}/${message.author.avatar}.jpeg`)
+            message.channel.send(pfpEmbed);
+        } else {
+            let pfpEmbed = new Discord.MessageEmbed()
+                .setColor(1752220)
+                .setImage(`https://cdn.discordapp.com/avatars/${uzivatel.id}/${uzivatel.avatar}.jpeg`)
+            message.channel.send(pfpEmbed);
+        }
+    } else if(command === 'user'){
+        let uzivatel = message.mentions.users.first()
+        if(!uzivatel){
+            uzivatel = message.author;
+        }
+        console.log(uzivatel);
+        let userEmbed = new Discord.MessageEmbed()
+            .setColor(1752220)
+            .setAuthor(uzivatel.tag, `https://cdn.discordapp.com/avatars/${uzivatel.id}/${uzivatel.avatar}.jpeg`)
+            .addFields(
+                {name: 'Poslední zpráva', value: `**Obsah**: ${lastMessage(uzivatel, 'obsah')}\n **Vytvořeno**: ${lastMessage(uzivatel, 'time')}`, inline: true},
+                {name: 'Typ', value: `**Bot**: ${uzivatel.bot}\n **System**: ${uzivatel.system}\n **Člověk**: ${isUser(uzivatel)}`, inline: true},
+                {name: 'Přítomnost', value: `**Status**: ${uzivatel.presence.status}\n **Platforma**: ${platform(uzivatel)}`, inline: true},
+                {name: 'Info', value: `**Jméno**: ${uzivatel.tag} (<@${uzivatel.id}>)\n **ID**: ${uzivatel.id}\n **Datum Vytvoření**: ${uzivatel.createdAt}`, inline: true}
+            )
+            .setTimestamp()
+        message.channel.send(userEmbed);
+    } else {
+        message.react('❌');
+        let unknownEmbed = new Discord.MessageEmbed()
+            .setColor(1752220)
+            .setDescription('🔻 Neznámý příkaz! Napiš ?help pro seznam příkazů 🔻')
+        message.channel.send(unknownEmbed);
+    }
 });
 
 client.on('messageReactionAdd', async (reaction, user, message) =>{
@@ -92,7 +156,7 @@ client.on('messageReactionAdd', async (reaction, user, message) =>{
                         .setColor(1752220)
                         .setAuthor("Azuremic", "https://i.imgur.com/m4hkkIj.png")
                         .addFields(
-                            {name: `Podpora ${user.username}`, value: 'Počkej na někoho z Admin Teamu prosím'}
+                            {name: `Podpora ${user.username}`, value: 'Počkej na někoho z Admin Teamu, prosím'}
                         )
                     client.channels.cache.get(channel.id).send(`<@${user.id}>`);
                     client.channels.cache.get(channel.id).send(supportChannelEmbed);
