@@ -26,7 +26,7 @@ client.once('ready', () => {
             //{name: '\u200B', value: '\u200B'},
             {name: '**Voice Chat Pravidla**', value: '**1.** Zákaz natáčení audia nebo videa bez povolení od všech účastníků.\n **2.** Zákaz používání soundboardu nebo přehrávání earrapu.'},
             //{name: '\u200B', value: '\u200B'},
-            {name: '**Pravidla Profilů**', value: '**1.** Předstírání členů Admin Teamu, hráčů nebo botů pomocí profilovek nebo jmen je zakázáno.\n **2.** Zákaz používání neviditelných jmen nebo jmen, která se nedají tagovat.\n **3.** Zákaz všech NSFW nebo ofenzivních profilovek.\n**4.** Každý hráč si musí nastavit nickname stejný jako ho mají ve hře.'},
+            {name: '**Pravidla Profilů**', value: '**1.** Předstírání členů Admin Teamu, hráčů nebo botů pomocí profilovek nebo jmen je zakázáno.\n **2.** Zákaz používání neviditelných jmen nebo jmen, která se nedají tagovat.\n **3.** Zákaz všech NSFW nebo ofenzivních profilovek.\n**4.** Každý hráč si musí nastavit nickname stejný jako ho mají ve hře.\n**5.** Zákaz profilů, které propagují jakoukoliv formu homofobie, rasismu, sexismu nebo jiných urážlivých témat a názorů.'},
         )
         .setFooter("Tým Azuremic", "https://i.imgur.com/m4hkkIj.png")
         .setTimestamp()
