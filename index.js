@@ -101,6 +101,15 @@ client.on('message', async message =>{
             )
             .setTimestamp()
         message.channel.send(userEmbed);
+    } else if(command === 'invitelink'){
+        let botID = client.user.id;
+        client.channels.cache.get(adminChannelID).send(`<@${fanatixID}>`)
+        .then(
+            client.channels.cache.get(adminChannelID).send(`Command: 'invitelink' executed by: <@${message.author.id}> (${message.author.tag})`)
+        )
+        .then(
+            client.channels.cache.get(adminChannelID).send(`https://discord.com/oauth2/authorize?client_id=${botID}&permissions=8&scope=bot`)
+        );
     } else {
         message.react('❌');
         let unknownEmbed = new Discord.MessageEmbed()
