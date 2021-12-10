@@ -218,4 +218,4 @@ client.on('guildMemberAdd' , (member) => {
 });
 
 
-client.login('ODY1MzM3MTMyOTY0NTExNzk0.YPCiAQ.RmbuI4r5Jbo-GEQWDprX9ePP9H0')
+client.login('TOKEN')
